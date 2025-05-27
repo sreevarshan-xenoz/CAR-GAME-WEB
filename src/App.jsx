@@ -1,7 +1,7 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls, Environment } from '@react-three/drei';
-import Track from './components/Track';
+import Track from './components/Track.jsx';
 import Car from './components/Car';
 import Effects from './components/Effects';
 import UI from './components/UI';
