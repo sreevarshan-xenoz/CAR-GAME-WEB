@@ -1,0 +1,1 @@
+export default function Sound() { return null; } 
