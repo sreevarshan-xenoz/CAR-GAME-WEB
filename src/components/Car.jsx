@@ -28,6 +28,10 @@ function useCarControls() {
   return input;
 }
 
+const ROAD_Y = 0.05; // Half the road's height (0.1)
+const ROAD_WIDTH = 12;
+const ROAD_LENGTH = 300;
+
 export default function Car() {
   const carRef = useRef();
   const underglowRef = useRef();
@@ -35,9 +39,10 @@ export default function Car() {
   const input = useCarControls();
 
   // Car state
-  const [position, setPosition] = useState(new THREE.Vector3(0, 0, 0));
+  const [position, setPosition] = useState(new THREE.Vector3(0, ROAD_Y, 0));
   const [rotation, setRotation] = useState(0); // Yaw in radians
   const [speed, setSpeed] = useState(0);
+  const [velocityY, setVelocityY] = useState(0); // For gravity
 
   // Car parameters
   const maxSpeed = 40;
@@ -46,6 +51,7 @@ export default function Car() {
   const friction = 8;
   const steerSpeed = 2.5;
   const steerLimit = 1.2;
+  const gravity = -30;
 
   useFrame((_, delta) => {
     // Steering
@@ -70,7 +76,23 @@ export default function Car() {
 
     // Move in the direction of rotation
     const forward = new THREE.Vector3(Math.sin(newRotation), 0, Math.cos(newRotation));
-    const newPos = position.clone().add(forward.multiplyScalar(spd * delta));
+    let newPos = position.clone().add(forward.multiplyScalar(spd * delta));
+
+    // Simple physics: gravity
+    let vy = velocityY + gravity * delta;
+    let nextY = newPos.y + vy * delta;
+    // Collision with road
+    if (nextY < ROAD_Y) {
+      nextY = ROAD_Y;
+      vy = 0;
+    }
+    newPos.y = nextY;
+    setVelocityY(vy);
+
+    // Road boundaries
+    newPos.x = Math.max(-ROAD_WIDTH / 2 + 1, Math.min(ROAD_WIDTH / 2 - 1, newPos.x));
+    newPos.z = Math.max(-ROAD_LENGTH / 2 + 2, Math.min(ROAD_LENGTH / 2 - 2, newPos.z));
+
     setPosition(newPos);
 
     // Update car mesh
@@ -87,7 +109,7 @@ export default function Car() {
 
     // Camera follow
     camera.position.lerp(
-      newPos.clone().add(new THREE.Vector3(0, 7, 14).applyAxisAngle(new THREE.Vector3(0, 1, 0), newRotation)),
+      newPos.clone().add(new THREE.Vector3(0, 7, -14).applyAxisAngle(new THREE.Vector3(0, 1, 0), newRotation)),
       0.12
     );
     camera.lookAt(newPos);

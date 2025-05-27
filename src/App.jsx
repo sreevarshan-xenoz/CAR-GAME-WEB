@@ -2,6 +2,8 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera, OrbitControls, Environment } from '@react-three/drei';
 // import Track from './components/Track.jsx';
+import Road from './components/Road.jsx';
+import Buildings from './components/Buildings.jsx';
 import Car from './components/Car.jsx';
 import Effects from './components/Effects.jsx';
 import UI from './components/UI.jsx';
@@ -19,6 +21,8 @@ export default function App() {
         {/* Magenta fill light for retro vibe */}
         <directionalLight position={[-20, 10, -10]} intensity={0.7} color="#ff00ea" />
         <Environment preset="sunset" />
+        <Buildings />
+        <Road />
         {/* <Track /> */}
         <Car />
         <Effects />
