@@ -16,7 +16,7 @@
     "@react-three/drei": "^9.89.6",
     "@react-three/postprocessing": "^2.8.7",
     "zustand": "^4.5.2",
-    "react-use-sound": "^4.0.1"
+    "use-sound": "^4.0.1"
   },
   "devDependencies": {
     "vite": "^5.0.0"
