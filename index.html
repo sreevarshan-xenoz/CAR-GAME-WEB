@@ -7,7 +7,41 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <div id="bg-gradient"></div>
+  <canvas id="starfield"></canvas>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
+  <script>
+    // Simple animated starfield
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let w = window.innerWidth, h = window.innerHeight;
+    canvas.width = w; canvas.height = h;
+    let stars = Array.from({length: 120}, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.2 + 0.2,
+      s: Math.random() * 0.5 + 0.2
+    }));
+    function drawStars() {
+      ctx.clearRect(0, 0, w, h);
+      for (const star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r, 0, 2 * Math.PI);
+        ctx.fillStyle = '#fff8';
+        ctx.shadowColor = '#0ff';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        star.y += star.s;
+        if (star.y > h) { star.y = 0; star.x = Math.random() * w; }
+      }
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+    window.addEventListener('resize', () => {
+      w = window.innerWidth; h = window.innerHeight;
+      canvas.width = w; canvas.height = h;
+    });
+  </script>
 </body>
 </html> 

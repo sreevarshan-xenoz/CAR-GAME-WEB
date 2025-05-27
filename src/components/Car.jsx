@@ -44,6 +44,7 @@ function useCarControls() {
 
 export default function Car() {
   const carRef = useRef();
+  const underglowRef = useRef();
   const { camera } = useThree();
   const input = useCarControls();
 
@@ -96,6 +97,12 @@ export default function Car() {
       carRef.current.lookAt(lookAt);
     }
 
+    // Animate underglow
+    if (underglowRef.current) {
+      const t = performance.now() * 0.002;
+      underglowRef.current.material.emissiveIntensity = 1.5 + Math.sin(t * 2) * 0.5;
+    }
+
     // Camera follow
     camera.position.lerp(
       carPos.clone().add(new THREE.Vector3(0, 7, 14)),
@@ -104,9 +111,14 @@ export default function Car() {
     camera.lookAt(carPos);
   });
 
-  // Low-poly neon car model
+  // Low-poly neon car model with underglow
   return (
     <group ref={carRef}>
+      {/* Underglow */}
+      <mesh ref={underglowRef} position={[0, -0.45, 0]} scale={[2.2, 0.2, 4.2]}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="#00fff7" emissive="#00fff7" emissiveIntensity={2} transparent opacity={0.5} />
+      </mesh>
       {/* Body */}
       <mesh castShadow>
         <boxGeometry args={[2, 0.7, 4]} />
