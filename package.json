@@ -1,5 +1,5 @@
 {
-  "name": "car-game",
+  "name": "retro-car-game",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -9,8 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "three": "^0.159.0",
-    "cannon-es": "^0.20.0"
+    "@react-three/fiber": "^8.15.13",
+    "@react-three/drei": "^9.89.6",
+    "@react-three/postprocessing": "^2.8.7",
+    "zustand": "^4.5.2",
+    "react-use-sound": "^4.0.1"
   },
   "devDependencies": {
     "vite": "^5.0.0"
