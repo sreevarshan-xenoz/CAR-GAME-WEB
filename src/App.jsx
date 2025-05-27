@@ -4,7 +4,7 @@ import { PerspectiveCamera, OrbitControls, Environment } from '@react-three/drei
 import Track from './components/Track.jsx';
 import Car from './components/Car';
 import Effects from './components/Effects';
-import UI from './components/UI';
+import UI from './components/UI.jsx';
 import Sound from './components/Sound';
 
 export default function App() {
