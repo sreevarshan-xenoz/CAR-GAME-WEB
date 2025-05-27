@@ -11,9 +11,13 @@ export default function App() {
   return (
     <>
       <Canvas shadows dpr={[1, 2]} style={{ height: '100vh', width: '100vw' }}>
-        <PerspectiveCamera makeDefault position={[0, 10, 20]} fov={60} />
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 20, 10]} intensity={1.2} castShadow shadow-mapSize-width={2048} shadow-mapSize-height={2048} />
+        <PerspectiveCamera makeDefault position={[0, 14, 28]} fov={60} />
+        {/* Neon blue ambient */}
+        <ambientLight intensity={0.7} color="#00fff7" />
+        {/* Neon cyan main light */}
+        <directionalLight position={[10, 20, 10]} intensity={1.5} color="#00fff7" castShadow shadow-mapSize-width={2048} shadow-mapSize-height={2048} />
+        {/* Magenta fill light for retro vibe */}
+        <directionalLight position={[-20, 10, -10]} intensity={0.7} color="#ff00ea" />
         <Environment preset="sunset" />
         <Track />
         <Car />

@@ -33,32 +33,35 @@ export default function Track() {
     return new THREE.ExtrudeGeometry(shape, extrudeSettings);
   }, [curve]);
 
-  // Track material
+  // Neon track material
   const material = useMemo(() => new THREE.MeshStandardMaterial({
-    color: '#222',
-    roughness: 0.7,
-    metalness: 0.1,
+    color: '#0ff', // Neon cyan
+    roughness: 0.3,
+    metalness: 0.8,
+    emissive: '#00fff7',
+    emissiveIntensity: 0.7,
     flatShading: true,
   }), []);
 
-  // Draw the spline as a line for debugging
-  const lineGeometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(200));
-    return geo;
-  }, [curve]);
+  // Neon border as a glowing line
+  const borderPoints = useMemo(() => curve.getPoints(400), [curve]);
+  const borderGeometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(borderPoints), [borderPoints]);
+
+  // Ground: very dark for contrast
+  const groundColor = '#0a0a16';
 
   return (
     <group>
       {/* Road mesh */}
       <mesh geometry={geometry} material={material} receiveShadow castShadow />
-      {/* Spline line (for debug) */}
-      {/* <line geometry={lineGeometry}>
-        <lineBasicMaterial color="#00ffe7" linewidth={2} />
-      </line> */}
+      {/* Neon border */}
+      <line geometry={borderGeometry}>
+        <lineBasicMaterial color="#00fff7" linewidth={4} />
+      </line>
       {/* Ground plane */}
       <mesh position={[0, -0.1, 0]} receiveShadow>
         <boxGeometry args={[200, 0.2, 200]} />
-        <meshStandardMaterial color="#1a5e1a" flatShading />
+        <meshStandardMaterial color={groundColor} flatShading />
       </mesh>
     </group>
   );
