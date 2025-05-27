@@ -3,47 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Car Game</title>
-  <link rel="stylesheet" href="./style.css">
+  <title>Retro Car Game</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <div id="game-container">
-    <div id="loading-screen">
-      <div class="loading-content">
-        <h1>Car Game</h1>
-        <div class="progress-bar">
-          <div class="progress"></div>
-        </div>
-        <p class="loading-text">Loading...</p>
-      </div>
-    </div>
-    
-    <div id="ui-overlay">
-      <div id="score-display">Score: <span id="score">0</span></div>
-      <div id="speed-display">Speed: <span id="speed">0</span> km/h</div>
-      <div id="timer-display">Time: <span id="timer">00:00</span></div>
-      
-      <div id="game-menu" class="hidden">
-        <h2>Car Game</h2>
-        <button id="start-button">Start Game</button>
-        <button id="restart-button" class="hidden">Restart</button>
-        <div class="controls-info">
-          <h3>Controls:</h3>
-          <p>W/A/S/D or Arrow Keys: Drive</p>
-          <p>Space: Brake</p>
-          <p>R: Reset Position</p>
-          <p>P: Pause/Resume</p>
-        </div>
-      </div>
-      
-      <div id="pause-menu" class="hidden">
-        <h2>Game Paused</h2>
-        <button id="resume-button">Resume</button>
-        <button id="quit-button">Quit to Menu</button>
-      </div>
-    </div>
-  </div>
-  
-  <script type="module" src="./src/main.js"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html> 
