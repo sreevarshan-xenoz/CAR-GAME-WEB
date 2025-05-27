@@ -2,20 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 
-// Spline points for the track (should match Track.jsx)
-const points = [
-  [0, 0, 0],
-  [20, 0, -40],
-  [60, 0, -40],
-  [80, 0, 0],
-  [60, 0, 40],
-  [20, 0, 40],
-  [0, 0, 0],
-].map((p) => new THREE.Vector3(...p));
-const curve = new THREE.CatmullRomCurve3(points, true, 'catmullrom', 0.5);
-const curveLength = curve.getLength();
-
-// Keyboard input hook
 function useCarControls() {
   const [input, setInput] = useState({ left: false, right: false, accel: false, brake: false });
   useEffect(() => {
@@ -49,9 +35,9 @@ export default function Car() {
   const input = useCarControls();
 
   // Car state
-  const [u, setU] = useState(0); // position along the spline (0-1)
-  const [speed, setSpeed] = useState(0); // units per second
-  const [steer, setSteer] = useState(0); // -1 (left) to 1 (right)
+  const [position, setPosition] = useState(new THREE.Vector3(0, 0, 0));
+  const [rotation, setRotation] = useState(0); // Yaw in radians
+  const [speed, setSpeed] = useState(0);
 
   // Car parameters
   const maxSpeed = 40;
@@ -59,42 +45,38 @@ export default function Car() {
   const brake = 30;
   const friction = 8;
   const steerSpeed = 2.5;
-  const steerLimit = 0.6;
+  const steerLimit = 1.2;
 
   useFrame((_, delta) => {
     // Steering
-    let steerTarget = 0;
-    if (input.left) steerTarget -= steerLimit;
-    if (input.right) steerTarget += steerLimit;
-    setSteer((s) => THREE.MathUtils.lerp(s, steerTarget, steerSpeed * delta));
+    let steer = 0;
+    if (input.left) steer -= steerLimit;
+    if (input.right) steer += steerLimit;
+    // Only allow steering if moving
+    let newRotation = rotation;
+    if (Math.abs(speed) > 0.1) {
+      newRotation += steer * steerSpeed * delta * (speed >= 0 ? 1 : -1);
+    }
+    setRotation(newRotation);
 
     // Acceleration/braking
     let spd = speed;
     if (input.accel) spd += accel * delta;
     if (input.brake) spd -= brake * delta;
-    spd -= friction * delta; // friction
-    spd = Math.max(0, Math.min(maxSpeed, spd));
+    spd -= friction * delta * Math.sign(spd);
+    if (Math.abs(spd) < 0.1) spd = 0;
+    spd = Math.max(-maxSpeed / 2, Math.min(maxSpeed, spd));
     setSpeed(spd);
 
-    // Move along the spline
-    let nextU = u + (spd / curveLength) * delta;
-    if (nextU > 1) nextU -= 1;
-    setU(nextU);
+    // Move in the direction of rotation
+    const forward = new THREE.Vector3(Math.sin(newRotation), 0, Math.cos(newRotation));
+    const newPos = position.clone().add(forward.multiplyScalar(spd * delta));
+    setPosition(newPos);
 
-    // Get position and tangent from spline
-    const pos = curve.getPointAt(nextU);
-    const tangent = curve.getTangentAt(nextU);
-    const normal = new THREE.Vector3(0, 1, 0);
-    const binormal = new THREE.Vector3().crossVectors(normal, tangent).normalize();
-
-    // Offset car left/right from center of track
-    const offset = binormal.multiplyScalar(steer * 2.5);
-    const carPos = pos.clone().add(offset);
+    // Update car mesh
     if (carRef.current) {
-      carRef.current.position.copy(carPos);
-      // Orient car in direction of tangent
-      const lookAt = pos.clone().add(tangent);
-      carRef.current.lookAt(lookAt);
+      carRef.current.position.copy(newPos);
+      carRef.current.rotation.y = newRotation;
     }
 
     // Animate underglow
@@ -105,10 +87,10 @@ export default function Car() {
 
     // Camera follow
     camera.position.lerp(
-      carPos.clone().add(new THREE.Vector3(0, 7, 14)),
+      newPos.clone().add(new THREE.Vector3(0, 7, 14).applyAxisAngle(new THREE.Vector3(0, 1, 0), newRotation)),
       0.12
     );
-    camera.lookAt(carPos);
+    camera.lookAt(newPos);
   });
 
   // Low-poly neon car model with underglow
