@@ -92,34 +92,36 @@ class Game {
   }
   
   loadAssets() {
-    const loadingManager = new THREE.LoadingManager();
-    const gltfLoader = new GLTFLoader(loadingManager);
-    const textureLoader = new THREE.TextureLoader(loadingManager);
-    
-    // Update loading progress
-    loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
-      const progress = (itemsLoaded / itemsTotal) * 100;
-      document.querySelector('.progress').style.width = `${progress}%`;
-      document.querySelector('.loading-text').textContent = `Loading... ${Math.round(progress)}%`;
-    };
-    
-    // When loading is complete
-    loadingManager.onLoad = () => {
-      // Hide loading screen
-      document.getElementById('loading-screen').classList.add('hidden');
-      
-      // Show game menu
-      document.getElementById('game-menu').classList.remove('hidden');
-      
-      // Initialize game objects
-      this.initGame();
-    };
-    
+    // Comment out the loading manager logic for now
+    // const loadingManager = new THREE.LoadingManager();
+    // const gltfLoader = new GLTFLoader(loadingManager);
+    // const textureLoader = new THREE.TextureLoader(loadingManager);
+    // 
+    // loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+    //   const progress = (itemsLoaded / itemsTotal) * 100;
+    //   document.querySelector('.progress').style.width = `${progress}%`;
+    //   document.querySelector('.loading-text').textContent = `Loading... ${Math.round(progress)}%`;
+    // };
+    // 
+    // loadingManager.onLoad = () => {
+    //   document.getElementById('loading-screen').classList.add('hidden');
+    //   document.getElementById('game-menu').classList.remove('hidden');
+    //   this.initGame();
+    // };
+
+    // Use direct loaders (not actually loading any assets yet)
+    const gltfLoader = new GLTFLoader();
+    const textureLoader = new THREE.TextureLoader();
+
     // Load track
     this.track = new Track(this.scene, this.physics, gltfLoader, textureLoader);
-    
     // Load car
     this.car = new Car(this.scene, this.physics, gltfLoader, textureLoader);
+
+    // Immediately hide loading screen and show menu
+    document.getElementById('loading-screen').classList.add('hidden');
+    document.getElementById('game-menu').classList.remove('hidden');
+    this.initGame();
   }
   
   initGame() {
