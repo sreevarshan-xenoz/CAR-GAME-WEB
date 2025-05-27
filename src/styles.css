@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 body, html {
   width: 100vw;
   height: 100vh;
@@ -78,6 +79,4 @@ body, html {
   font-family: 'Orbitron', 'Arial', sans-serif;
   box-shadow: 0 0 8px #00ffe7aa;
   pointer-events: none;
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap'); 
+} 
