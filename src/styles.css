@@ -1,0 +1,83 @@
+body, html {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Orbitron', 'Arial', sans-serif;
+  background: #181a20;
+  color: #fff;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+.ui-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ui-panel {
+  background: rgba(20, 20, 30, 0.85);
+  border: 2px solid #00ffe7;
+  border-radius: 12px;
+  padding: 18px 32px;
+  margin: 24px auto;
+  box-shadow: 0 0 24px #00ffe7aa;
+  text-align: center;
+  pointer-events: auto;
+  max-width: 400px;
+}
+
+.ui-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #00ffe7;
+  text-shadow: 0 0 12px #00ffe7, 0 0 32px #00ffe7aa;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.ui-btn {
+  background: linear-gradient(90deg, #00ffe7 0%, #0077ff 100%);
+  color: #181a20;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 12px 0;
+  cursor: pointer;
+  box-shadow: 0 0 8px #00ffe7aa;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  pointer-events: auto;
+}
+
+.ui-btn:hover {
+  background: linear-gradient(90deg, #0077ff 0%, #00ffe7 100%);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.ui-hud {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: rgba(20, 20, 30, 0.7);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 1.1rem;
+  color: #00ffe7;
+  font-family: 'Orbitron', 'Arial', sans-serif;
+  box-shadow: 0 0 8px #00ffe7aa;
+  pointer-events: none;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap'); 
